@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>정은우's Homepage (22200681)</title>
+  <style>
+
+    .hidden { display: none; }
+
+    #nostyle body, #nostyle {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+
+    :root{
+      --bg:#c9493c;            
+      --card:#ffffff;         
+      --pill:#a73b30;          
+      --pillText:#fff;
+      --pillRing:rgba(255,255,255,.55);
+      --sidebar:#f2ccca;      
+      --footer:#ecc0bb;        
+      --wrap: 1340px;         
+      --shadow: 0 10px 26px rgba(0,0,0,.16);
+      --inset: 0 1px 0 rgba(255,255,255,.6) inset;
+    }
+    #style2 body, #style2{
+      margin:0;
+      font-family: system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      background:var(--bg);
+      color:#fff;
+    }
+    .page{ max-width: var(--wrap); margin: 0 auto; padding: 14px 18px 0; }
+    .title{
+      margin: 0 0 6px;
+      font-size: 64px;
+      font-weight: 900;
+      letter-spacing:.2px;
+      line-height:1.1;
+    }
+    .subtitle{ margin: 0 0 14px; font-size: 22px; opacity:.95; }
+    .card-wrap{ position: relative; }
+    .card{
+      background:var(--card);
+      color:#222;
+      border-radius: 8px;
+      padding: 18px 16px 16px;
+      box-shadow: var(--inset), var(--shadow);
+    }
+    .pill-stack{
+      position: absolute;
+      right: 12px;
+      top: -28px;
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+      align-items:flex-end;
+      filter: drop-shadow(0 6px 10px rgba(0,0,0,.22));
+    }
+    .pill{
+      appearance:none;
+      border:2px solid var(--pillRing);
+      background:var(--pill);
+      color:var(--pillText);
+      font-weight:800;
+      border-radius:999px;
+      padding: 8px 18px;
+      min-width: 150px;
+      cursor: pointer;
+      text-align:center;
+    }
+    .pill.active{
+      background:#fff;
+      color:var(--pill);
+      border-color:#fff;
+    }
+    h2{ margin: 0 0 10px; font-size: 24px; }
+    h3{ margin: 14px 0 8px; font-size: 18px; }
+    p{ line-height:1.55; margin: 10px 0; }
+    a{ color:#0c0d0d; text-decoration:none; }
+    a:hover{ text-decoration:underline; }
+    .soft{
+      background: var(--sidebar);
+      color:#5c2721;
+      border-radius: 6px;
+      padding: 10px 12px;
+      margin: 10px 0 8px;
+      border-left: 6px solid #e0a39d;
+    }
+    .footbar{
+      margin-top: 10px;
+      background: var(--footer);
+      color:#5a251f;
+      border-radius: 6px;
+      padding: 8px 10px;
+      font-size: 12px;
+      text-align: center;
+      box-shadow: 0 1px 0 rgba(255,255,255,.5) inset;
+    }
+    .spacer{ height: 420px; }
+    @media (max-width: 1100px){
+      .title{ font-size: 48px; }
+      .pill-stack{ position: static; flex-direction:row; justify-content:flex-end; margin: 8px 0 10px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- No Style -->
+  <div id="nostyle">
+    <h1>Welcome to 정은우's Homepage (22200681)</h1>
+    <p>Use the menu to select different Stylesheets</p>
+    <ul>
+      <li>Stylesheet 1</li>
+      <li><button onclick="setTheme(2)">Stylesheet 2</button></li>
+      <li>Stylesheet 3</li>
+      <li>Stylesheet 4</li>
+      <li><button onclick="setTheme(0)">No Stylesheet</button></li>
+    </ul>
+    <h2>Same Page Different Stylesheets</h2>
+    <p>This is a demonstration of how different stylesheets can change the layout...</p>
+    <h2>No Styles</h2>
+    <p>This page uses DIV elements... <a href="#">No Stylesheet</a>.</p>
+    <h3>Side-Bar</h3>
+    <p>Lorem ipsum dolor sit amet...</p>
+  </div>
+
+  <!-- Stylesheet 2 -->
+  <div id="style2" class="hidden">
+    <div class="page">
+      <h1 class="title">Welcome to My Homepage</h1>
+      <p class="subtitle">Use the menu to select different Stylesheets</p>
+
+      <div class="card-wrap">
+        <div class="pill-stack">
+          <div class="pill">Stylesheet 1</div>
+          <div class="pill active">Stylesheet 2</div>
+          <div class="pill">Stylesheet 3</div>
+          <div class="pill">Stylesheet 4</div>
+          <div class="pill" onclick="setTheme(0)">No Stylesheet</div>
+        </div>
+
+        <div class="card">
+          <h2>Same Page Different Stylesheets</h2>
+          <p>This is a demonstration of how different stylesheets can change the layout...</p>
+          <h3>No Styles</h3>
+          <p>This page uses DIV elements... <a href="#">No Stylesheet</a>.</p>
+
+          <div class="soft">
+            <b>Side-Bar</b><br>
+            Lorem ipsum dolor sit amet, consectetuer adipiscing elit...
+          </div>
+
+          <div class="footbar">
+            Lorem ipsum dolor sit amet, consectetuer adipiscing elit...
+          </div>
+        </div>
+      </div>
+
+      <div class="spacer"></div>
+    </div>
+  </div>
+
+  <script>
+    function setTheme(n){
+      if(n === 2){
+        document.getElementById("nostyle").classList.add("hidden");
+        document.getElementById("style2").classList.remove("hidden");
+      } else if(n === 0){
+        document.getElementById("style2").classList.add("hidden");
+        document.getElementById("nostyle").classList.remove("hidden");
+      }
+    }
+  </script>
+</body>
+</html>

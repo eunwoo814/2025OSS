@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Welcome to 정은우's Homepage (22200681)</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 20px; }
+
+    .hidden { display: none; }
+
+    .page {
+      max-width: 1550px; margin: 16px auto; padding: 0 12px;
+    }
+    .topbar {
+      background:#04AA6D; color:#fff; padding:18px; border-radius:6px;
+    }
+    .topbar h1 { margin:0 0 6px; font-size:34px; font-weight:800; }
+    .topbar p { margin:0; font-size:14px; }
+    .menu { width:170px; float:left; }
+    .menu .btn {
+      display:block; width:100%; text-align:left;
+      padding:10px; margin:0 0 10px; border-radius:6px;
+      border:1px solid #cfcfcf; background:#efefef; font-weight:600;
+    }
+    .menu .btn.active { background:#04AA6D; color:#fff; border-color:#04AA6D; }
+    .content { margin-left:190px; margin-right:310px; }
+    .sidebar {
+      width:280px; float:right; background:#2196F3; color:#fff;
+      padding:16px; border-radius:6px;
+    }
+    .sidebar h3 { margin:0 0 8px; }
+    .notice {
+      clear:both; background:#efefef; margin-top:18px; padding:10px;
+      border-radius:6px; font-size:12px; text-align:center;
+    }
+    .clearfix::after { content:""; display:block; clear:both; }
+  </style>
+</head>
+<body>
+
+  <!-- No Style -->
+  <div id="nostyle">
+    <h1>Welcome to 정은우's Homepage (22200681)</h1>
+    <p>Use the menu to select different Stylesheets</p>
+
+    <ul>
+      <li><button onclick="setTheme(1)">Stylesheet 1</button></li>
+      <li>Stylesheet 2</li>
+      <li>Stylesheet 3</li>
+      <li>Stylesheet 4</li>
+      <li><button onclick="setTheme(0)">No Stylesheet</button></li>
+    </ul>
+
+    <h2>Same Page Different Stylesheets</h2>
+    <p>
+      This is a demonstration of how different stylesheets can change the layout of your HTML page. 
+      You can change the layout of this page by selecting different stylesheets in the menu, 
+      or by selecting one of the following links: 
+      <a href="#">Stylesheet1</a>, 
+      <a href="#">Stylesheet2</a>, 
+      <a href="#">Stylesheet3</a>, 
+      <a href="#">Stylesheet4</a>.
+    </p>
+
+    <h2>No Styles</h2>
+    <p>
+      This page uses DIV elements to group different sections of the HTML page. 
+      Click here to see how the page looks like with no stylesheet: 
+      <a href="#">No Stylesheet</a>.
+    </p>
+
+    <h3>Side-Bar</h3>
+    <p>
+      Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt 
+      ut laoreet dolore magna aliquam erat volutpat.
+    </p>
+  </div>
+
+
+  <!-- Stylesheet 1 -->
+  <div id="style1" class="hidden">
+    <div class="page">
+      <div class="topbar">
+        <h1>Welcome to 정은우's Homepage (22200681)</h1>
+        <p>Use the menu to select different Stylesheets</p>
+      </div>
+
+      <div class="wrap clearfix">
+        <nav class="menu">
+          <button class="btn active" onclick="setTheme(1)">Stylesheet 1</button>
+          <button class="btn">Stylesheet 2</button>
+          <button class="btn">Stylesheet 3</button>
+          <button class="btn">Stylesheet 4</button>
+          <button class="btn" onclick="setTheme(0)">No Stylesheet</button>
+        </nav>
+
+        <main class="content">
+          <h1>Same Page Different Stylesheets</h1>
+          <p>
+            This is a demonstration of how different stylesheets can change the layout of your HTML page.
+            You can change the layout of this page by selecting different stylesheets in the menu, or by
+            selecting one of the following links:
+            <a href="#">Stylesheet1</a>, <a href="#">Stylesheet2</a>,
+            <a href="#">Stylesheet3</a>, <a href="#">Stylesheet4</a>.
+          </p>
+
+          <h2>No Styles</h2>
+          <p>
+            This page uses DIV elements to group different sections of the HTML page.
+            Click here to see how the page looks like with no stylesheet: <a href="#">No Stylesheet</a>.
+          </p>
+        </main>
+
+        <aside class="sidebar">
+          <h3>Side-Bar</h3>
+          <p>
+            Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod
+            tincidunt ut laoreet dolore magna aliquam erat volutpat.
+          </p>
+        </aside>
+
+        <div class="notice">
+          Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod
+          tincidunt ut laoreet dolore magna aliquam erat volutpat.
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <script>
+    function setTheme(n){
+      if(n === 1){
+        document.getElementById("nostyle").classList.add("hidden");
+        document.getElementById("style1").classList.remove("hidden");
+      } else if(n === 0){
+        document.getElementById("style1").classList.add("hidden");
+        document.getElementById("nostyle").classList.remove("hidden");
+      }
+    }
+  </script>
+</body>
+</html>
