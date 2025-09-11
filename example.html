@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Album (unstyled)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    /* 스크린샷 느낌을 위한 최소한의 스타일만 사용 */
+    body{margin:16px; font-family:system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;}
+    .thumb{
+      width:100%;
+      height:225px;
+      background:#55595c;
+      color:#eceeef;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      margin:8px 0;
+    }
+    .card{ margin: 12px 0 28px; }
+    .row{ display:block; } /* 1열 세로 */
+    .btns{ display:inline-flex; gap:6px; }
+    small{ color:#666; }
+    /* 헤더(About/Contact) 영역을 스샷처럼 단순 텍스트로 */
+    .header-block{ margin-bottom: 16px; }
+    .header-block h4{ margin: 0 0 6px; }
+    .brand{ display:inline-flex; align-items:center; gap:6px; margin:8px 0; }
+    .brand .cam{ font-size:16px; }
+  </style>
+</head>
+<body>
+
+  <!-- 상단: 테마 토글 자리(스크린샷처럼 단순 버튼/라디오 느낌을 텍스트로만) -->
+  <div>
+    <button>Toggle theme</button>
+    <ul style="list-style: none; padding-left: 0; margin: 8px 0;">
+      <li>○ <strong>Light</strong></li>
+      <li>○ Dark ✓</li>
+      <li>○ Auto</li>
+    </ul>
+  </div>
+
+  <!-- 접힌 헤더 내용이 펼쳐진 상태처럼 단순 텍스트 블록 -->
+  <div class="header-block">
+    <h4>About</h4>
+    <p>
+      Add some information about the album below, the author, or any other background context.
+      Make it a few sentences long so folks can pick up some informative tidbits.
+      Then, link them off to some social networking sites or contact information.
+    </p>
+
+    <h4>Contact</h4>
+    <ul>
+      <li><a href="#">Follow on X</a></li>
+      <li><a href="#">Like on Facebook</a></li>
+      <li><a href="#">Email me</a></li>
+    </ul>
+
+    <div class="brand">
+      <span class="cam">📷</span>
+      <a href="#"><strong>Album</strong></a>
+    </div>
+  </div>
+
+  <!-- 본문 헤드라인 -->
+  <h2>Album example</h2>
+  <p>
+    Something short and leading about the collection below—its contents, the creator, etc.
+    Make it short and sweet, but not too short so folks don’t simply skip over it entirely.
+  </p>
+  <p>
+    <a href="#">Main call to action</a>
+    <a href="#" style="margin-left:8px;">Secondary action</a>
+  </p>
+
+  <!-- 카드 9개 (1열, 세로로 쌓임) -->
+  <div class="row">
+
+    <!-- 1 -->
+    <div class="card">
+      <div class="thumb">Thumbnail</div>
+      <p>This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+      <div class="btns">
+        <button>View</button><button>Edit</button>
+      </div>
+      <div><small>9 mins</small></div>
+    </div>
+
+    <!-- 2 -->
+    <div class="card">
+      <div class="thumb">Thumbnail</div>
+      <p>This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+      <div class="btns">
+        <button>View</button><button>Edit</button>
+      </div>
+      <div><small>9 mins</small></div>
+    </div>
+
+    <!-- 3 -->
+    <div class="card">
+      <div class="thumb">Thumbnail</div>
+      <p>This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+      <div class="btns">
+        <button>View</button><button>Edit</button>
+      </div>
+      <div><small>9 mins</small></div>
+    </div>
+
+    <!-- 4 -->
+    <div class="card">
+      <div class="thumb">Thumbnail</div>
+      <p>This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+      <div class="btns">
+        <button>View</button><button>Edit</button>
+      </div>
+      <div><small>9 mins</small></div>
+    </div>
+
+    <!-- 5 -->
+    <div class="card">
+      <div class="thumb">Thumbnail</div>
+      <p>This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+      <div class="btns">
+        <button>View</button><button>Edit</button>
+      </div>
+      <div><small>9 mins</small></div>
+    </div>
+
+    <!-- 6 -->
+    <div class="card">
+      <div class="thumb">Thumbnail</div>
+      <p>This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+      <div class="btns">
+        <button>View</button><button>Edit</button>
+      </div>
+      <div><small>9 mins</small></div>
+    </div>
+
+    <!-- 7 -->
+    <div class="card">
+      <div class="thumb">Thumbnail</div>
+      <p>This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+      <div class="btns">
+        <button>View</button><button>Edit</button>
+      </div>
+      <div><small>9 mins</small></div>
+    </div>
+
+    <!-- 8 -->
+    <div class="card">
+      <div class="thumb">Thumbnail</div>
+      <p>This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+      <div class="btns">
+        <button>View</button><button>Edit</button>
+      </div>
+      <div><small>9 mins</small></div>
+    </div>
+
+    <!-- 9 -->
+    <div class="card">
+      <div class="thumb">Thumbnail</div>
+      <p>This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+      <div class="btns">
+        <button>View</button><button>Edit</button>
+      </div>
+      <div><small>9 mins</small></div>
+    </div>
+
+  </div>
+
+  <!-- 푸터 문구 -->
+  <hr>
+  <p>
+    Album example is © Bootstrap, but please download and customize it for yourself!<br>
+    New to Bootstrap? <a href="https://getbootstrap.com/">Visit the homepage</a> or read the getting started guide.
+  </p>
+
+</body>
+</html>
