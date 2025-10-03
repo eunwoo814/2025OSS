@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>수정</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="my.css" />
+</head>
+<body>
+<div class="container">
+  <header class="header">
+    <h1>✏️ 항목 수정</h1>
+    <a class="btn" href="index.html">목록</a>
+  </header>
+
+  <section class="card">
+    <div class="body">
+      <form id="f" class="form" novalidate>
+        <div class="row"><label>ID</label><input type="text" id="id" disabled /></div>
+
+        <div class="row">
+          <label for="level">Level *</label>
+          <select id="level" required>
+            <option>*</option><option>**</option><option>***</option><option>****</option>
+          </select>
+          <span class="error" id="e-level"></span>
+        </div>
+
+        <div class="row">
+          <label for="date">Date *</label>
+          <input type="date" id="date" required />
+          <span class="error" id="e-date"></span>
+        </div>
+
+        <div class="row full">
+          <label for="word">Word *</label>
+          <input type="text" id="word" required />
+          <span class="error" id="e-word"></span>
+        </div>
+
+        <div class="row full">
+          <label for="meaning">Meaning *</label>
+          <textarea id="meaning" rows="4" required></textarea>
+          <span class="error" id="e-meaning"></span>
+        </div>
+
+        <div class="row">
+          <label for="tags">Tags</label>
+          <input type="text" id="tags" />
+        </div>
+
+        <div class="row">
+          <label>Bookmark</label>
+          <label><input type="checkbox" id="bookmark" /> 즐겨찾기</label>
+        </div>
+
+        <div class="row full">
+          <button class="btn primary" type="submit">확인</button>
+          <a class="btn" href="index.html">취소</a>
+        </div>
+      </form>
+    </div>
+  </section>
+</div>
+
+<script>
+const KEY='vocab_items';
+const load=()=>JSON.parse(localStorage.getItem(KEY)||'[]');
+const save=(it)=>localStorage.setItem(KEY,JSON.stringify(it));
+const q=new URLSearchParams(location.search);
+const id=Number(q.get('id'));
+
+function fill(){
+  const it = load().find(x=>x.id===id);
+  if(!it){ alert('데이터가 없습니다.'); location.href='index.html'; return; }
+  idEl.value = it.id;
+  level.value = it.level; date.value = it.date;
+  word.value = it.word; meaning.value = it.meaning;
+  tags.value = it.tags||''; bookmark.checked = !!it.bookmark;
+}
+
+function validate(){
+  let ok=true;
+  const set=(id,msg)=>{document.getElementById(id).textContent=msg||''; if(msg) ok=false;}
+  set('e-level', level.value? '':'레벨 선택');
+  set('e-date', date.value? '':'날짜 선택');
+  set('e-word', word.value.trim().length>=2? '':'단어는 2자 이상');
+  set('e-meaning', meaning.value.trim().length>=2? '':'뜻은 2자 이상');
+  return ok;
+}
+
+const idEl = document.getElementById('id');
+const level = document.getElementById('level');
+const date = document.getElementById('date');
+const word = document.getElementById('word');
+const meaning = document.getElementById('meaning');
+const tags = document.getElementById('tags');
+const bookmark = document.getElementById('bookmark');
+
+fill();
+
+document.getElementById('f').addEventListener('submit', (e)=>{
+  e.preventDefault();
+  if(!validate()) return;
+  if(!confirm('게시물을 수정할까요?')) return;
+
+  const items = load().map(x => x.id===id ? {
+    ...x,
+    level: level.value,
+    date: date.value,
+    word: word.value.trim(),
+    meaning: meaning.value.trim(),
+    tags: tags.value.trim(),
+    bookmark: bookmark.checked
+  } : x);
+
+  save(items);
+  location.href = 'view.html?id='+id;
+});
+</script>
+</body>
+</html>

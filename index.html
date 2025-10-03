@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>My Vocabulary - 목록</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="my.css" />
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <h1>📚 My vocabulary</h1>
+      <a class="btn primary" href="add.html">+ 추가</a>
+    </header>
+
+    <section class="card">
+      <div class="body">
+        <table class="table" id="list">
+          <thead>
+            <tr>
+              <th style="width:60px">#</th>
+              <th class="hide-sm" style="width:100px">Level</th>
+              <th>Word</th>
+              <th>Meaning</th>
+              <th class="hide-sm" style="width:130px">Date</th>
+              <th style="width:120px">Menu</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+        <p class="muted">※ 제목(Word)을 클릭하면 상세 페이지로 이동합니다.</p>
+      </div>
+    </section>
+
+    <footer class="footer">© 2025 Your Name</footer>
+  </div>
+
+<script>
+const KEY = 'vocab_items';
+
+/* 시드 데이터(최초 1회만 10개 이상 생성) */
+function seedIfEmpty(){
+  const has = localStorage.getItem(KEY);
+  if(has) return;
+  const today = (d)=> new Date(Date.now()-d*86400000).toISOString().slice(0,10);
+  const levels = ['*','**','***','****'];
+  const words = [
+    ['superintendent','관리자, 감독관'],
+    ['persistent','끈질긴, 계속되는'],
+    ['maintenance','유지보수'],
+    ['accuse','비난하다, 고소하다'],
+    ['electric','전기의'],
+    ['probationary','견습의'],
+    ['indicate','나타내다, 보이다'],
+    ['legitimate','합법적인'],
+    ['compile','편집하다, 엮다'],
+    ['inherit','상속하다'],
+    ['refactor','리팩터링하다']
+  ];
+  const items = words.map((w,i)=>({
+    id: i+1,
+    level: levels[i%levels.length],
+    word: w[0],
+    meaning: w[1],
+    date: today(i),
+    tags: i%2? 'tech,study':'study',
+    bookmark: i%3===0
+  }));
+  localStorage.setItem(KEY, JSON.stringify(items));
+}
+
+function load(){ return JSON.parse(localStorage.getItem(KEY) || '[]'); }
+function save(items){ localStorage.setItem(KEY, JSON.stringify(items)); }
+function remove(id){
+  const items = load().filter(it => it.id !== id);
+  save(items); render();
+}
+
+function render(){
+  const tbody = document.querySelector('#list tbody');
+  const items = load().sort((a,b)=>b.id-a.id);
+  tbody.innerHTML = items.map(it => `
+    <tr>
+      <td>${it.id}</td>
+      <td class="hide-sm"><span class="badge">${it.level}</span></td>
+      <td><a href="view.html?id=${it.id}"><b>${it.word}</b></a> ${it.bookmark ? '⭐':''}</td>
+      <td>${it.meaning}</td>
+      <td class="hide-sm">${it.date}</td>
+      <td>
+        <a class="btn ghost" href="view.html?id=${it.id}">보기</a>
+        <button class="btn danger" onclick="onDel(${it.id})">삭제</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function onDel(id){
+  if(confirm('이 항목을 삭제할까요?')) remove(id);
+}
+
+seedIfEmpty();
+render();
+</script>
+</body>
+</html>

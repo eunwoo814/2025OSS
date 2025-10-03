@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>단어 추가</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="my.css" />
+</head>
+<body>
+<div class="container">
+  <header class="header">
+    <h1>+ 새 단어 추가</h1>
+    <a class="btn" href="index.html">목록</a>
+  </header>
+
+  <section class="card">
+    <div class="body">
+      <form id="f" class="form" novalidate>
+        <div class="row">
+          <label for="level">Level *</label>
+          <select id="level" required>
+            <option value="" disabled selected>선택</option>
+            <option>*</option><option>**</option><option>***</option><option>****</option>
+          </select>
+          <span class="error" id="e-level"></span>
+        </div>
+
+        <div class="row">
+          <label for="date">Date *</label>
+          <input type="date" id="date" required />
+          <span class="error" id="e-date"></span>
+        </div>
+
+        <div class="row full">
+          <label for="word">Word *</label>
+          <input type="text" id="word" placeholder="ex) persistent" required />
+          <span class="error" id="e-word"></span>
+        </div>
+
+        <div class="row full">
+          <label for="meaning">Meaning *</label>
+          <textarea id="meaning" rows="4" placeholder="뜻을 입력" required></textarea>
+          <span class="error" id="e-meaning"></span>
+        </div>
+
+        <div class="row">
+          <label for="tags">Tags</label>
+          <input type="text" id="tags" placeholder="study, tech (콤마로 구분)" />
+          <span class="help">콤마로 태그 구분</span>
+        </div>
+
+        <div class="row">
+          <label>Bookmark</label>
+          <label><input type="checkbox" id="bookmark" /> 즐겨찾기</label>
+        </div>
+
+        <div class="row full">
+          <button class="btn primary" type="submit">확인</button>
+          <a class="btn" href="index.html">취소</a>
+        </div>
+      </form>
+    </div>
+  </section>
+</div>
+
+<script>
+const KEY='vocab_items';
+const load=()=>JSON.parse(localStorage.getItem(KEY)||'[]');
+const save=(it)=>localStorage.setItem(KEY,JSON.stringify(it));
+
+function validate(){
+  let ok=true;
+  const set = (id,msg)=>{ document.getElementById(id).textContent = msg||''; if(msg) ok=false; };
+
+  const level = document.getElementById('level').value;
+  set('e-level', level ? '' : '레벨을 선택하세요.');
+
+  const date = document.getElementById('date').value;
+  set('e-date', date ? '' : '날짜를 선택하세요.');
+
+  const word = document.getElementById('word').value.trim();
+  set('e-word', word.length>=2 ? '' : '단어는 2자 이상 입력하세요.');
+
+  const meaning = document.getElementById('meaning').value.trim();
+  set('e-meaning', meaning.length>=2 ? '' : '뜻은 2자 이상 입력하세요.');
+
+  const tags = document.getElementById('tags').value;
+  if(tags && tags.length>60){ alert('태그는 60자 이내로 입력하세요.'); ok=false; }
+
+  return ok;
+}
+
+document.getElementById('f').addEventListener('submit', (e)=>{
+  e.preventDefault();
+  if(!validate()) return;
+
+  const items = load();
+  const id = (items.at(-1)?.id || 0) + 1;
+
+  const item = {
+    id,
+    level: document.getElementById('level').value,
+    date: document.getElementById('date').value,
+    word: document.getElementById('word').value.trim(),
+    meaning: document.getElementById('meaning').value.trim(),
+    tags: document.getElementById('tags').value.trim(),
+    bookmark: document.getElementById('bookmark').checked
+  };
+
+  alert('게시물이 추가됩니다!');
+  items.push(item); save(items);
+  location.href='index.html';
+});
+</script>
+</body>
+</html>
