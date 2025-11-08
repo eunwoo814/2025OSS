@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AJAX CRUD Demo</title>
+  <style>
+    :root { --gap:12px; --bd:#e5e7eb; --txt:#111; --muted:#6b7280; --bg:#fafafa }
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;margin:0;background:var(--bg);color:var(--txt)}
+    header{padding:16px 20px;border-bottom:1px solid var(--bd);display:flex;gap:12px;align-items:center;justify-content:space-between;background:#fff;position:sticky;top:0}
+    header .left{display:flex;gap:8px;align-items:center}
+    header input{padding:8px;border:1px solid var(--bd);border-radius:8px;min-width:260px}
+    header button{padding:8px 12px;border:1px solid var(--bd);background:#fff;border-radius:8px;cursor:pointer}
+    main{max-width:1000px;margin:24px auto;padding:0 16px;display:grid;grid-template-columns:320px 1fr;gap:24px}
+    form{background:#fff;border:1px solid var(--bd);border-radius:12px;padding:16px;display:grid;gap:12px}
+    label{font-size:12px;color:var(--muted)}
+    input,select{width:100%;padding:10px;border:1px solid var(--bd);border-radius:8px}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap)}
+    .actions{display:flex;gap:8px}
+    .actions button{flex:1;padding:10px;border:1px solid var(--bd);background:#fff;border-radius:8px;cursor:pointer}
+    table{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--bd);border-radius:12px;overflow:hidden}
+    th,td{padding:10px 12px;border-bottom:1px solid var(--bd);text-align:left;font-size:14px}
+    th{background:#f3f4f6}
+    tr:hover{background:#f9fafb}
+    .muted{color:var(--muted);font-size:12px}
+    .toolbar{display:flex;gap:8px;align-items:center;justify-content:flex-end;margin-bottom:10px}
+    .pill{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--bd);padding:6px 10px;border-radius:999px;background:#fff}
+    @media (max-width:860px){ main{grid-template-columns:1fr} }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="left">
+      <strong>HW</strong>
+      <span class="muted">front x back</span>
+    </div>
+    <div class="right">
+      <input id="apiBase" placeholder="API Base (예: http://localhost:3001)" />
+      <button id="saveBase">API 저장</button>
+      <button id="reload">목록 새로고침</button>
+    </div>
+  </header>
+
+  <main>
+    <form id="frm">
+      <div class="row">
+        <div>
+          <label>id</label>
+          <input id="id" type="text" placeholder="수정/삭제 시 자동 입력" readonly />
+        </div>
+        <div>
+          <label>part</label>
+          <select id="part">
+            <option value="web">web</option>
+            <option value="server">server</option>
+            <option value="ios">ios</option>
+            <option value="android">android</option>
+            <option value="design">design</option>
+            <option value="ai">ai</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div>
+          <label>name</label>
+          <input id="name" placeholder="예: Alice" />
+        </div>
+        <div>
+          <label>age</label>
+          <input id="age" type="number" min="1" />
+        </div>
+      </div>
+      <div class="row">
+        <div>
+          <label>city</label>
+          <input id="city" placeholder="예: Seoul" />
+        </div>
+        <div>
+          <label>email</label>
+          <input id="email" type="email" placeholder="name@example.com" />
+        </div>
+      </div>
+      <div class="actions">
+        <button type="button" id="btnCreate">추가(POST)</button>
+        <button type="button" id="btnUpdate">수정(PATCH)</button>
+        <button type="button" id="btnDelete">삭제(DELETE)</button>
+        <button type="reset">초기화</button>
+      </div>
+    </form>
+
+    <section>
+      <div class="toolbar">
+        <span class="pill">
+          <span>검색</span>
+          <input id="q" placeholder="name, city, part" />
+        </span>
+        <button id="btnSearch">검색</button>
+        <button id="btnClear">초기화</button>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th style="width:60px">id</th>
+            <th>name</th>
+            <th>part</th>
+            <th style="width:80px">age</th>
+            <th>city</th>
+            <th>email</th>
+            <th style="width:120px">액션</th>
+          </tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+      <div class="muted" style="margin-top:8px">행의 편집 버튼을 누르면 좌측 폼에 값이 채워짐</div>
+    </section>
+  </main>
+
+  <script>
+    const apiBaseInput = document.querySelector('#apiBase');
+    const saveBaseBtn = document.querySelector('#saveBase');
+    const reloadBtn = document.querySelector('#reload');
+    const rowsEl = document.querySelector('#rows');
+    const qInput = document.querySelector('#q');
+    const btnSearch = document.querySelector('#btnSearch');
+    const btnClear = document.querySelector('#btnClear');
+
+    const $ = (id) => document.getElementById(id);
+    const $id = $('id'), $name = $('name'), $part = $('part'), $age = $('age'), $city = $('city'), $email = $('email');
+
+    function getBase(){ return localStorage.getItem('API_BASE') || 'http://localhost:3001'; }
+    function setBase(v){ localStorage.setItem('API_BASE', v); }
+    function endpoint(path){ return `${getBase().replace(/\/$/,'')}${path}`; }
+
+    apiBaseInput.value = getBase();
+    saveBaseBtn.onclick = () => { setBase(apiBaseInput.value.trim()); load(); }
+    reloadBtn.onclick = () => load();
+
+    async function httpJSON(url, opt={}){
+      const res = await fetch(url, { headers:{'Content-Type':'application/json'}, ...opt });
+      if (res.status === 204) return null;
+      const ct = res.headers.get('content-type') || '';
+      if (ct.includes('application/json')) return res.json();
+      return res.text();
+    }
+
+    async function load(q){
+      const url = q ? endpoint(`/my_data?q=${encodeURIComponent(q)}`) : endpoint(`/my_data`);
+      const list = await httpJSON(url);
+      rowsEl.innerHTML = '';
+      (list || []).forEach(item => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${item.id}</td>
+          <td>${item.name}</td>
+          <td>${item.part}</td>
+          <td>${item.age}</td>
+          <td>${item.city}</td>
+          <td>${item.email}</td>
+          <td>
+            <button data-act="edit" data-id="${item.id}">편집</button>
+            <button data-act="del" data-id="${item.id}">삭제</button>
+          </td>
+        `;
+        rowsEl.appendChild(tr);
+      });
+    }
+
+    async function create(){
+      const body = {
+        name: $name.value.trim(),
+        part: $part.value,
+        age: Number($age.value || 0),
+        city: $city.value.trim(),
+        email: $email.value.trim()
+      };
+      await httpJSON(endpoint(`/my_data`), { method:'POST', body: JSON.stringify(body) });
+      await load();
+      $('frm').reset();
+    }
+
+    async function update(){
+      const id = String($id.value).trim();   // 🔥 FIXED: 문자열/UUID id 지원
+      if (!id) return alert('id 필요');
+
+      const body = {};
+      if ($name.value) body.name = $name.value.trim();
+      if ($part.value) body.part = $part.value;
+      if ($age.value) body.age = Number($age.value);
+      if ($city.value) body.city = $city.value.trim();
+      if ($email.value) body.email = $email.value.trim();
+
+      await httpJSON(endpoint(`/my_data/${encodeURIComponent(id)}`), {
+        method:'PATCH',
+        body: JSON.stringify(body)
+      });
+      await load();
+    }
+
+    async function remove(){
+      const id = String($id.value).trim();   // 🔥 FIXED
+      if (!id) return alert('id 필요');
+
+      await fetch(endpoint(`/my_data/${encodeURIComponent(id)}`), { method:'DELETE' });
+      await load();
+      $('frm').reset();
+    }
+
+    document.querySelector('#btnCreate').onclick = create;
+    document.querySelector('#btnUpdate').onclick = update;
+    document.querySelector('#btnDelete').onclick = remove;
+
+    rowsEl.addEventListener('click', async(e)=>{
+      const b = e.target.closest('button'); if(!b) return;
+      const id = b.dataset.id;
+      if (b.dataset.act === 'edit'){
+        const item = await httpJSON(endpoint(`/my_data/${encodeURIComponent(id)}`));
+        if(!item) return;
+        $id.value = item.id;
+        $name.value = item.name || "";
+        $part.value = item.part || "web";
+        $age.value = item.age ?? "";
+        $city.value = item.city || "";
+        $email.value = item.email || "";
+      } else if (b.dataset.act === 'del'){
+        $id.value = id;
+        remove();
+      }
+    });
+
+    btnSearch.onclick = () => load(qInput.value.trim());
+    btnClear.onclick = () => { qInput.value = ''; load(); }
+
+    load();
+  </script>
+</body>
+</html>

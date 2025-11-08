@@ -1,0 +1,28 @@
+let fruits1 = ["apple", "banana", "melon"];
+console.log(fruits1[1]);
+
+
+let fruits2 = [];
+fruits2[0] = "apple";
+fruits2[2] = "banana";
+
+for(let i=0;i<fruits2.length;i++){
+    console.log(fruits2[i]);
+}
+for(let each of fruits2){
+    console.log(each);
+}
+
+const fruits3 = new Array("Apple", "Banana", "Grape");
+for(let each of fruits3){
+    console.log("fruits3 : " + each);
+}
+
+fruits3.push("Orange");
+for(let each of fruits3){
+    console.log("fruits3 : " + each);
+}
+
+
+
+// 위에 나온 push 메서드를 모른 다는 가정하에, 배열에 추가해야 하는 값이 있다면 어떻게 하면 될까요?
